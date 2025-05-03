@@ -31,7 +31,7 @@ const CommentWidget = () => {
                 <button
                     className={`w-full h-12 ${review?.status === 'Completed' ? 'bg-[color:var(--color-disabled)]' : 'bg-[color:var(--color-main)]'} rounded-lg cursor-pointer`}
                     onClick={handleSubmitReview}
-                    disabled={review?.status === 'Completed'}
+                    disabled={review?.status === 'Completed' || comment.length === 0}
                 >
                     <p className="text-[color:var(--color-text)] text-lg font-semibold">Submit</p>
                 </button>
