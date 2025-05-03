@@ -5,12 +5,13 @@ import { useKeenSlider } from 'keen-slider/react';
 import { KeenSliderInstance } from 'keen-slider';
 import ErrorComponent from '../components/ErrorComponent.tsx';
 import { deleteImageFromS3 } from '../utils/aws.ts';
+import defaultReview from '../defaultReview.json';
 
 export interface IReview {
     id: string;
     merchantId: string;
     items: IReviewItem[];
-    result: IReviewResult[];
+    result?: IReviewResult[];
     status: 'Pending' | 'Completed' | 'Failed';
     createdAt: string;
     updatedAt: string;
@@ -38,7 +39,7 @@ export interface IUploadedMediaObject {
 interface IReviewContext {
     review: IReview | null;
     setReview: Dispatch<SetStateAction<IReview | null>>;
-    reviewId: string;
+    reviewId: string | undefined;
     reviewResult: IReviewResult[];
     setReviewResult: Dispatch<SetStateAction<IReviewResult[]>>;
     currentSlide: number;
@@ -56,6 +57,7 @@ interface IReviewContext {
     finalSubmissionSuccessful: boolean | undefined;
     setFinalSubmissionSuccessful: Dispatch<SetStateAction<boolean | undefined>>;
     handleMediaFileDelete: (file: IUploadedMediaObject) => void;
+    isFetching: boolean;
 }
 
 const ReviewContext = createContext<IReviewContext | null>(null);
@@ -64,14 +66,14 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const { id } = useParams();
     const [review, setReview] = useState<IReview | null>(null);
     const [reviewResult, setReviewResult] = useState<IReviewResult[]>([]);
-    const [reviewId, setReviewId] = useState<string>('');
+    const [reviewId] = useState<string | undefined>(id);
     const [currentSlide, setCurrentSlide] = useState<number>(0);
     const [loaded, setLoaded] = useState<boolean>(false);
     const [files, setFiles] = useState<IUploadedMediaObject[]>([]);
     const [comment, setComment] = useState<string>('');
     const [finalSubmissionSuccessful, setFinalSubmissionSuccessful] = useState<boolean | undefined>(undefined);
-
-    const { data: reviewData, isError } = useGetReviewQuery(reviewId);
+    const [skipFetch] = useState<boolean>(!id || id === '1');
+    const { data: reviewData, isError, isFetching } = useGetReviewQuery(reviewId as string, { skip: skipFetch });
     const [updateReview] = useUpdateReviewMutation();
 
     const slideChanged = (slider: KeenSliderInstance) => {
@@ -87,12 +89,12 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     // Set review ID from route
     useEffect(() => {
-        if (id) setReviewId(id);
+        if (!id || id === '1') setReview(defaultReview as IReview);
     }, [id]);
 
     // Load review and prefill media + comment
     useEffect(() => {
-        if (reviewData) {
+        if (reviewData && !isFetching) {
             const mediaResults: IUploadedMediaObject[] = reviewData.result
                 ?.filter((res: any) => res.mediaURL)
                 .map((res: any) => res); // Consider normalizing this
@@ -103,7 +105,7 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
             setComment(commentResult?.comment || '');
             setReview(reviewData);
         }
-    }, [reviewData]);
+    }, [reviewData, isFetching]);
 
     // Error state
     if (isError) return <ErrorComponent message="Nothing to see here!" />;
@@ -120,13 +122,15 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     const handleSubmitReview = async () => {
         if (!review) return;
-
+        if (reviewId === '1') {
+            setFinalSubmissionSuccessful(true);
+            return;
+        }
         const finalReview: IReview = {
             ...review,
             result: [...reviewResult, ...files, { comment }],
             status: 'Completed',
         };
-
         try {
             await updateReview(finalReview as any); // optional: normalize before sending
             setFinalSubmissionSuccessful(true);
@@ -159,6 +163,7 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 finalSubmissionSuccessful,
                 setFinalSubmissionSuccessful,
                 handleMediaFileDelete,
+                isFetching,
             }}
         >
             {children}

@@ -39,8 +39,7 @@ export const uploadImageToS3 = async (file: File, merchantId: string): Promise<s
     };
 
     try {
-        const upload = await s3Client.send(new PutObjectCommand(uploadParams)); //await s3Client.putObject(uploadParams).promise();
-        console.log('UPLOAD', upload, key);
+        await s3Client.send(new PutObjectCommand(uploadParams)); //await s3Client.putObject(uploadParams).promise();
         return `https://${import.meta.env.VITE_APP_AWS_BUCKET_NAME}.s3.${import.meta.env.VITE_APP_AWS_REGION}.amazonaws.com/${key}`;
     } catch (error: any) {
         console.error(error);
@@ -65,7 +64,6 @@ export const deleteImageFromS3 = async (fileKey: string): Promise<boolean> => {
 
     try {
         await s3Client.send(new DeleteObjectCommand(deleteParams));
-        console.log(`✅ Deleted from S3: ${fileKey}`);
         return true;
     } catch (error: any) {
         console.error(`❌ Error deleting from S3: ${error.message}`);
