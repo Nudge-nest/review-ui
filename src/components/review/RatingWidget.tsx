@@ -50,7 +50,7 @@ const RatingWidget: FC<RatingWidgetProps> = ({ product, result, isCompleted }) =
                 <img src={image || 'https://picsum.photos/200/300'} className="h-15 w-15 rounded mb-4 block mx-auto" />
                 <p className={`text-base text-balance`}>
                     {`Your rating for `}
-                    <b>{`${name || ''}`}</b>?
+                    <b>{` ${name || ''}`}</b>?
                 </p>
             </div>
             <div className="w-full p-2 flex justify-center gap-4">

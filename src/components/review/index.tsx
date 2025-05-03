@@ -1,13 +1,22 @@
-import { IReview, IReviewItem, useReview } from '../../contexts/ReviewContext.tsx';
+import { useEffect, useState } from 'react';
+
+import { IReviewItem, IReviewResult, useReview } from '../../contexts/ReviewContext.tsx';
 import RatingWidget from './RatingWidget.tsx';
 import MediaWidget from './MediaWidget.tsx';
 import CommentWidget from './CommentWidget.tsx';
+import Loading from '../Loading.tsx';
 
 const Review = () => {
-    const { review, sliderRef, loaded, instanceRef, currentSlide } = useReview();
-    if (!review) return null;
-    const { items, result } = review as IReview;
-
+    const { review, sliderRef, loaded, instanceRef, currentSlide, isFetching } = useReview();
+    const [items, setItems] = useState<IReviewItem[]>([]);
+    const [result, setResult] = useState<IReviewResult[] | undefined>(undefined);
+    useEffect(() => {
+        if (review) {
+            setItems(review.items);
+            if (review.result) setResult(review.result);
+        }
+    }, [review]);
+    if (isFetching) return <Loading />;
     return (
         <div className={`h-full px-4 text-center grid grid-rows-[95%_auto]`}>
             <div ref={sliderRef} className="h-full scroll-auto keen-slider">
