@@ -11,15 +11,15 @@ steps:
           - '-f'
           - Dockerfile
           - '--build-arg'
-          - VITE_APP_BACKEND_HOST=$VITE_APP_BACKEND_HOST
+          - "VITE_APP_BACKEND_HOST=$$VITE_APP_BACKEND_HOST"
           - '--build-arg'
-          - VITE_APP_AWS_ACCESS_KEY=$VITE_APP_AWS_ACCESS_KEY
+          - "VITE_APP_AWS_ACCESS_KEY=$$VITE_APP_AWS_ACCESS_KEY"
           - '--build-arg'
-          - VITE_APP_AWS_SECRET_KEY=$VITE_APP_AWS_SECRET_KEY
+          - "VITE_APP_AWS_SECRET_KEY=$$VITE_APP_AWS_SECRET_KEY"
           - '--build-arg'
-          - VITE_APP_AWS_REGION=$VITE_APP_AWS_REGION
+          - "VITE_APP_AWS_REGION=$$VITE_APP_AWS_REGION"
           - '--build-arg'
-          - VITE_APP_AWS_BUCKET_NAME=$VITE_APP_AWS_BUCKET_NAME
+          - "VITE_APP_AWS_BUCKET_NAME=$$VITE_APP_AWS_BUCKET_NAME"
       id: 'build'
       secretEnv:
         - 'VITE_APP_BACKEND_HOST'
