@@ -18,7 +18,7 @@ export const uploadImageToS3 = async (file: File, merchantId: string): Promise<s
     const key = `${merchantId}/${safeFileName}`;
 
     const s3Client = new S3Client({
-        region: 'eu-north-1',
+        region: import.meta.env.VITE_APP_AWS_REGION,
         credentials: {
             accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY,
             secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_KEY,
@@ -40,7 +40,7 @@ export const uploadImageToS3 = async (file: File, merchantId: string): Promise<s
 
     try {
         await s3Client.send(new PutObjectCommand(uploadParams)); //await s3Client.putObject(uploadParams).promise();
-        return `https://${import.meta.env.VITE_APP_AWS_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/${key}`;
+        return `https://${import.meta.env.VITE_APP_AWS_BUCKET_NAME}.s3.${import.meta.env.VITE_APP_AWS_REGION}.amazonaws.com/${key}`;
     } catch (error: any) {
         console.error(error);
         // Inform user about the error
@@ -50,7 +50,7 @@ export const uploadImageToS3 = async (file: File, merchantId: string): Promise<s
 
 export const deleteImageFromS3 = async (fileKey: string): Promise<boolean> => {
     const s3Client = new S3Client({
-        region: 'eu-north-1',
+        region: import.meta.env.VITE_APP_AWS_REGION,
         credentials: {
             accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY,
             secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_KEY,

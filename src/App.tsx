@@ -8,7 +8,7 @@ const Layout = () => {
     return (
         <ReviewProvider>
             <div
-                className={`${currentTheme} w-full max-w-[480px] mx-auto h-[100vh] relative bg-[color:var(--color-bg)] text-[color:var(--color-text)]`}
+                className={`${currentTheme} w-full max-w-[480px] mx-auto h-[100vh] relative bg-[color:var(--color-lighter)] text-[color:var(--color-text)]`}
             >
                 <Outlet />
             </div>

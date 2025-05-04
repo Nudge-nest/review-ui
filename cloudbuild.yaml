@@ -10,6 +10,16 @@ steps:
           - .
           - '-f'
           - Dockerfile
+          - '--build-arg'
+          - VITE_APP_BACKEND_HOST=$VITE_APP_BACKEND_HOST
+          - '--build-arg'
+          - VITE_APP_AWS_ACCESS_KEY=$VITE_APP_AWS_ACCESS_KEY
+          - '--build-arg'
+          - VITE_APP_AWS_SECRET_KEY=$VITE_APP_AWS_SECRET_KEY
+          - '--build-arg'
+          - VITE_APP_AWS_REGION=$VITE_APP_AWS_REGION
+          - '--build-arg'
+          - VITE_APP_AWS_BUCKET_NAME=$VITE_APP_AWS_BUCKET_NAME
       id: 'build'
       secretEnv:
         - 'VITE_APP_BACKEND_HOST'
@@ -37,16 +47,6 @@ steps:
           - '--labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS'
           - '--region=$_DEPLOY_REGION'
           - '--quiet'
-          - '--update-secrets'
-          - 'VITE_APP_BACKEND_HOST=projects/1094805904049/secrets/VITE_APP_BACKEND_HOST:latest'
-          - '--update-secrets'
-          - 'VITE_APP_AWS_ACCESS_KEY=projects/1094805904049/secrets/VITE_APP_AWS_ACCESS_KEY:latest'
-          - '--update-secrets'
-          - 'VITE_APP_AWS_SECRET_KEY=projects/1094805904049/secrets/VITE_APP_AWS_SECRET_KEY:latest'
-          - '--update-secrets'
-          - 'VITE_APP_AWS_REGION=projects/1094805904049/secrets/VITE_APP_AWS_REGION:latest'
-          - '--update-secrets'
-          - 'VITE_APP_AWS_BUCKET_NAME=projects/1094805904049/secrets/VITE_APP_AWS_BUCKET_NAME:latest'
       id: Deploy
       secretEnv:
           - 'VITE_APP_BACKEND_HOST'
