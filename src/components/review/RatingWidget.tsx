@@ -47,7 +47,7 @@ const RatingWidget: FC<RatingWidgetProps> = ({ product, result, isCompleted }) =
     return (
         <div className={`pt-12`}>
             <div className={`w-full text-center`}>
-                <img src={image || 'https://picsum.photos/200/300'} className="h-15 w-15 rounded mb-4 block mx-auto" />
+                <img src={image || 'https://picsum.photos/200/300'} className="h-15 w-15 rounded mb-4 block mx-auto" alt={`${name}-image`}/>
                 <p className={`text-base text-balance`}>
                     {`Your rating for `}
                     <b>{` ${name || ''}`}</b>?
