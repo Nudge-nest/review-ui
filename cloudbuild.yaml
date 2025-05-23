@@ -1,6 +1,25 @@
 # [START cloudbuild_quickstart_build]
 steps:
-    # -------------------- Build docker image from dockerfile in the root of the repo ---------------------------------
+  # Step 1: Generate .env in /workspace
+    - name: 'ubuntu'
+      entrypoint: 'bash'
+      args:
+        - '-c'
+        - |
+          cat <<EOF > /workspace/.env
+          VITE_APP_BACKEND_HOST=$$VITE_APP_BACKEND_HOST
+          VITE_APP_AWS_BUCKET_NAME=$$VITE_APP_AWS_BUCKET_NAME
+          VITE_APP_AWS_ACCESS_KEY=$$VITE_APP_AWS_ACCESS_KEY
+          VITE_APP_AWS_SECRET_KEY=$$VITE_APP_AWS_SECRET_KEY
+          VITE_APP_AWS_REGION=$$VITE_APP_AWS_REGION
+          EOF
+      secretEnv: # Secrets are masked in logs
+        - 'VITE_APP_BACKEND_HOST'
+        - 'VITE_APP_AWS_ACCESS_KEY'
+        - 'VITE_APP_AWS_SECRET_KEY'
+        - 'VITE_APP_AWS_REGION'
+        - 'VITE_APP_AWS_BUCKET_NAME'
+    # -------------------- Build docker image from dockerfile in the root of the repo (accesses /workspace/.env)---------------------------------
     - name: 'gcr.io/cloud-builders/docker'
       args:
           - build
@@ -9,25 +28,10 @@ steps:
           - '$LOCATION-docker.pkg.dev/$PROJECT_ID/nudgenest-fe-service/nudgenest-fe-service:$COMMIT_SHA'
           - .
           - '-f'
-          - Dockerfile
-          - '--build-arg'
-          - "VITE_APP_BACKEND_HOST=$$VITE_APP_BACKEND_HOST"
-          - '--build-arg'
-          - "VITE_APP_AWS_ACCESS_KEY=$$VITE_APP_AWS_ACCESS_KEY"
-          - '--build-arg'
-          - "VITE_APP_AWS_SECRET_KEY=$$VITE_APP_AWS_SECRET_KEY"
-          - '--build-arg'
-          - "VITE_APP_AWS_REGION=$$VITE_APP_AWS_REGION"
-          - '--build-arg'
-          - "VITE_APP_AWS_BUCKET_NAME=$$VITE_APP_AWS_BUCKET_NAME"
+          - 'Dockerfile'
+          - '/workspace'  # Build context is /workspace
+      dir: '/workspace'  # Ensure Dockerfile is in /workspace
       id: 'build'
-      secretEnv:
-        - 'VITE_APP_BACKEND_HOST'
-        - 'VITE_APP_AWS_ACCESS_KEY'
-        - 'VITE_APP_AWS_SECRET_KEY'
-        - 'VITE_APP_AWS_REGION'
-        - 'VITE_APP_AWS_BUCKET_NAME'
-
     # -------------------- Push to google repo ---------------------------------
     - name: gcr.io/cloud-builders/docker
       args:
