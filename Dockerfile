@@ -3,7 +3,6 @@ FROM node:23-alpine AS builder
 
 WORKDIR /app
 
-COPY .env ./
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
@@ -21,6 +20,7 @@ ENV VITE_APP_AWS_SECRET_KEY=$VITE_APP_AWS_SECRET_KEY
 ENV VITE_APP_AWS_REGION=$VITE_APP_AWS_REGION
 ENV VITE_APP_AWS_BUCKET_NAME=$VITE_APP_AWS_BUCKET_NAME
 
+COPY .env .
 COPY . .
 RUN yarn build
 
