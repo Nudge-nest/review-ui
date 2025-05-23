@@ -28,12 +28,12 @@ steps:
           - '$LOCATION-docker.pkg.dev/$PROJECT_ID/nudgenest-fe-service/nudgenest-fe-service:$COMMIT_SHA'
           - .
           - '-f'
-          - 'Dockerfile'
+          - Dockerfile
           - '/workspace'  # Build context is /workspace
       dir: '/workspace'  # Ensure Dockerfile is in /workspace
       id: 'build'
     # -------------------- Push to google repo ---------------------------------
-    - name: gcr.io/cloud-builders/docker
+    - name: 'gcr.io/cloud-builders/docker'
       args:
           - push
           - '$LOCATION-docker.pkg.dev/$PROJECT_ID/nudgenest-fe-service/nudgenest-fe-service:$COMMIT_SHA'
