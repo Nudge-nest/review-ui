@@ -29,7 +29,6 @@ steps:
           - .
           - '-f'
           - Dockerfile
-          - '/workspace'  # Build context is /workspace
       dir: '/workspace'  # Ensure Dockerfile is in /workspace
       id: 'build'
     # -------------------- Push to google repo ---------------------------------
