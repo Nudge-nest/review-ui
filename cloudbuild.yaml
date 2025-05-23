@@ -19,6 +19,8 @@ steps:
         - 'VITE_APP_AWS_SECRET_KEY'
         - 'VITE_APP_AWS_REGION'
         - 'VITE_APP_AWS_BUCKET_NAME'
+    - name: 'ubuntu'
+      args: [ 'ls', '-la', '/workspace' ]
     # -------------------- Build docker image from dockerfile in the root of the repo (accesses /workspace/.env)---------------------------------
     - name: 'gcr.io/cloud-builders/docker'
       args:
