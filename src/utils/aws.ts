@@ -18,7 +18,7 @@ export const uploadImageToS3 = async (file: File, merchantId: string): Promise<s
     const key = `${merchantId}/${safeFileName}`;
 
     const s3Client = new S3Client({
-        region: 'eu-north-1',
+        region: import.meta.env.VITE_APP_AWS_REGION,
         credentials: {
             accessKeyId: import.meta.env.VITE_APP_AWS_ACCESS_KEY,
             secretAccessKey: import.meta.env.VITE_APP_AWS_SECRET_KEY,
@@ -28,7 +28,7 @@ export const uploadImageToS3 = async (file: File, merchantId: string): Promise<s
     //https://s3.$vite_app_aws_region.amazonaws.com/%24VITE_APP_AWS_BUCKET_NAME/undefined/yoda.webp?x-id=PutObject
 
     const uploadParams: PutObjectRequest = {
-        Bucket: 'nudge-nest-media',
+        Bucket: import.meta.env.VITE_APP_AWS_BUCKET_NAME,
         Key: key,
         Body: await readFileAsArrayBuffer(file),
         ContentType: file.type || 'application/octet-stream',

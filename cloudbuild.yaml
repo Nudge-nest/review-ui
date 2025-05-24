@@ -2,6 +2,7 @@
 steps:
   # Step 1: Generate .env in /workspace
     - name: 'ubuntu'
+      id: 'create-env'
       entrypoint: 'bash'
       args:
         - '-c'
@@ -19,31 +20,12 @@ steps:
         - 'VITE_APP_AWS_SECRET_KEY'
         - 'VITE_APP_AWS_REGION'
         - 'VITE_APP_AWS_BUCKET_NAME'
-    - name: 'ubuntu'
-      args: [ 'ls', '-la', '/workspace' ]
 
-    - name: 'ubuntu'
-      entrypoint: 'bash'
-      args:
-        - '-c'
-        - |
-          cat /workspace/.env  # Print .env contents to logs
-
-    # -------------------- Build docker image from dockerfile in the root of the repo (accesses /workspace/.env)---------------------------------
+    #  step 2: Build docker image from dockerfile in the root of the repo (accesses /workspace/.env)
     - name: 'gcr.io/cloud-builders/docker'
       args:
           - build
           - '--no-cache'
-          - '--build-arg'
-          - 'VITE_APP_BACKEND_HOST=$$VITE_APP_BACKEND_HOST'
-          - '--build-arg'
-          - 'VITE_APP_AWS_ACCESS_KEY=$$VITE_APP_AWS_ACCESS_KEY'
-          - '--build-arg'
-          - 'VITE_APP_AWS_SECRET_KEY=$$VITE_APP_AWS_SECRET_KEY'
-          - '--build-arg'
-          - 'VITE_APP_AWS_REGION=$$VITE_APP_AWS_REGION'
-          - '--build-arg'
-          - 'VITE_APP_AWS_BUCKET_NAME=$$VITE_APP_AWS_BUCKET_NAME'
           - '-t'
           - '$LOCATION-docker.pkg.dev/$PROJECT_ID/nudgenest-fe-service/nudgenest-fe-service:$COMMIT_SHA'
           - .
@@ -57,14 +39,17 @@ steps:
         - 'VITE_APP_AWS_REGION'
         - 'VITE_APP_AWS_BUCKET_NAME'
       id: 'build'
-    # -------------------- Push to google repo ---------------------------------
+      waitFor: ['create-env']
+
+    # step 3: Push to google repo
     - name: 'gcr.io/cloud-builders/docker'
       args:
           - push
           - '$LOCATION-docker.pkg.dev/$PROJECT_ID/nudgenest-fe-service/nudgenest-fe-service:$COMMIT_SHA'
       id: 'push'
+      waitFor: ['build']
 
-    # -------------------- Deploy ---------------------------------
+    # step 4: Deploy to cloud run
     - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
       args:
           - run

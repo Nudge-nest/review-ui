@@ -10,17 +10,10 @@ RUN yarn install --frozen-lockfile
 # Copy .env.production (optional, but useful for local testing)
 COPY .env ./
 
-# Debug: Show .env contents
-RUN echo "=== .env file contents ===" && cat .env && echo "========================"
-
+#copy source files
 COPY . .
 
 RUN yarn build
-
-# Debug: Verify build output contains the substituted values
-RUN echo "=== Checking built files for substitution ===" && \
-    find dist -name "*.js" -exec grep -l "VITE_APP" {} \; | head -3 | xargs cat | head -20
-
 
 # === Stage 2: Nginx Static Server ===
 FROM nginx:stable-alpine AS production
