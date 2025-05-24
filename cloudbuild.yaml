@@ -20,7 +20,7 @@ steps:
         - 'VITE_APP_AWS_REGION'
         - 'VITE_APP_AWS_BUCKET_NAME'
     - name: 'ubuntu'
-      args: [ 'vi', '/workspace' ]
+      args: [ 'ls', '-la', '/workspace' ]
 
     - name: 'ubuntu'
       entrypoint: 'bash'
