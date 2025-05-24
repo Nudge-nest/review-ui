@@ -19,23 +19,19 @@ ARG VITE_APP_AWS_BUCKET_NAME
 
 # Debug: Print received ARG values
 RUN echo "=== Docker Build Debug ==="
-RUN echo "VITE_APP_AWS_REGION ARG: $$VITE_APP_AWS_REGION"
-RUN echo "VITE_APP_BACKEND_HOST ARG: $$VITE_APP_BACKEND_HOST"
+RUN echo "VITE_APP_AWS_REGION ARG: $VITE_APP_AWS_REGION"
+RUN echo "VITE_APP_BACKEND_HOST ARG: $VITE_APP_BACKEND_HOST"
 RUN echo "=========================="
 
-# Set env so Vite sees them during build
-ENV VITE_APP_BACKEND_HOST=$$VITE_APP_BACKEND_HOST
-ENV VITE_APP_AWS_ACCESS_KEY=$$VITE_APP_AWS_ACCESS_KEY
-ENV VITE_APP_AWS_SECRET_KEY=$$VITE_APP_AWS_SECRET_KEY
-ENV VITE_APP_AWS_REGION=$$VITE_APP_AWS_REGION
-ENV VITE_APP_AWS_BUCKET_NAME=$$VITE_APP_AWS_BUCKET_NAME
+# Create .env file with actual values
+RUN echo "VITE_APP_BACKEND_HOST=$VITE_APP_BACKEND_HOST" > .env && \
+    echo "VITE_APP_AWS_ACCESS_KEY=$VITE_APP_AWS_ACCESS_KEY" >> .env && \
+    echo "VITE_APP_AWS_SECRET_KEY=$VITE_APP_AWS_SECRET_KEY" >> .env && \
+    echo "VITE_APP_AWS_REGION=$VITE_APP_AWS_REGION" >> .env && \
+    echo "VITE_APP_AWS_BUCKET_NAME=$VITE_APP_AWS_BUCKET_NAME" >> .env
 
-# Debug: Print ENV values that Vite will see
-RUN echo "=== Vite Environment Debug ==="
-RUN echo "VITE_APP_AWS_REGION ENV: $$VITE_APP_AWS_REGION"
-RUN echo "VITE_APP_BACKEND_HOST ENV: $$VITE_APP_BACKEND_HOST"
-RUN printenv | grep VITE
-RUN echo "============================="
+# Debug: Show .env contents
+RUN echo "=== .env file contents ===" && cat .env && echo "========================"
 
 COPY . .
 RUN yarn build
