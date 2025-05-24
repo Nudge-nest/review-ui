@@ -8,7 +8,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # Copy .env.production (optional, but useful for local testing)
-COPY .env .
+COPY .env.production .
 
 # Define ARGs (these match VITE_ vars)
 ARG VITE_APP_BACKEND_HOST
