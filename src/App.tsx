@@ -51,6 +51,7 @@ const Home = () => {
 };
 
 const App = () => {
+    console.log("AWS REGION:", import.meta.env.VITE_APP_AWS_REGION);
     return (
         <Routes>
             <Route element={<Layout />}>
