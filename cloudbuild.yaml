@@ -55,6 +55,7 @@ steps:
           - services
           - update
           - nudgenest-review-ui
+          - '--set-env-vars=VITE_APP_AWS_REGION=$VITE_APP_AWS_REGION,VITE_APP_AWS_BUCKET_NAME=$VITE_APP_AWS_BUCKET_NAME,VITE_APP_AWS_ACCESS_KEY=$VITE_APP_AWS_ACCESS_KEY,VITE_APP_AWS_SECRET_KEY=$VITE_APP_AWS_SECRET_KEY,VITE_APP_BACKEND_HOST=$VITE_APP_BACKEND_HOST'
           - '--platform=managed'
           - '--image=$LOCATION-docker.pkg.dev/$PROJECT_ID/nudgenest-fe-service/nudgenest-fe-service:$COMMIT_SHA'
           - '--labels=managed-by=gcp-cloud-build-deploy-cloud-run,commit-sha=$COMMIT_SHA,gcb-build-id=$BUILD_ID,gcb-trigger-id=$_TRIGGER_ID,$_LABELS'
