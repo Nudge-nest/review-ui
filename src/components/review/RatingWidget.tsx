@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { IReviewItem, IReviewResult, useReview } from '../../contexts/ReviewContext.tsx';
 import RatingStar from './Star.tsx';
+import { useReview } from '../../contexts/ReviewContext.tsx';
+import { IReviewItem, IReviewResult } from '../../types/review.ts';
 
 interface RatingWidgetProps {
     product: IReviewItem;
@@ -14,7 +15,7 @@ const RATING_ARRAY = Array.from({ length: MAX_RATING });
 const RatingWidget: FC<RatingWidgetProps> = ({ product, result, isCompleted }) => {
     const [selectedRating, setSelectedRating] = useState<number>(0);
     const { name, image, id } = product;
-    const { setReviewResult } = useReview();
+    const { reviewFormHoook } = useReview();
 
     useEffect(() => {
         if (isCompleted && result) {
@@ -29,25 +30,19 @@ const RatingWidget: FC<RatingWidgetProps> = ({ product, result, isCompleted }) =
         (ratingValue: number) => {
             if (isCompleted) return;
             setSelectedRating(() => ratingValue);
-            setReviewResult((prevState) => {
-                const index = prevState.findIndex((result) => result.id === id);
-
-                if (index !== -1) {
-                    const updated = [...prevState];
-                    updated[index] = { id, value: ratingValue };
-                    return updated;
-                }
-
-                return [...prevState, { id, value: ratingValue }];
-            });
+            reviewFormHoook.updateRating({ id: id, value: ratingValue });
         },
-        [id, setReviewResult, isCompleted]
+        [id, reviewFormHoook, isCompleted]
     );
 
     return (
         <div className={`pt-12`}>
             <div className={`w-full text-center`}>
-                <img src={image || 'https://placehold.co/300x300'} className="h-15 w-15 rounded mb-4 block mx-auto" alt={`${name}-image`}/>
+                <img
+                    src={image || 'https://placehold.co/300x300'}
+                    className="h-15 w-15 rounded mb-4 block mx-auto"
+                    alt={`${name}-image`}
+                />
                 <p className={`text-base text-balance`}>
                     {`Your rating for `}
                     <b>{` ${name || ''}`}</b>?

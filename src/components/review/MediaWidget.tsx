@@ -1,9 +1,10 @@
 import { FC, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { IconPlus, IconXboxXFilled } from '@tabler/icons-react';
-import { IUploadedMediaObject, useReview } from '../../contexts/ReviewContext.tsx';
-import { uploadImageToS3 } from '../../utils/aws.ts';
-import { v4 as uuid } from 'uuid';
+
+import { useReview } from '../../contexts/ReviewContext.tsx';
+import { IUploadedMediaObject, UploadResult } from '../../types/review.ts';
+import { useUploadReviewMediaMutation } from '../../redux/nudgenest.ts';
 
 const PreviewComponent: FC<{ media: IUploadedMediaObject; onDelete: () => void }> = ({ media, onDelete }) => {
     if (!media) return null;
@@ -39,15 +40,24 @@ const PreviewComponent: FC<{ media: IUploadedMediaObject; onDelete: () => void }
 };
 
 const MediaWidget = () => {
-    const { merchantId } = useReview();
-    const { files, setFiles, handleMediaFileDelete, review } = useReview();
+    const { merchantId, reviewFormHoook, review, reviewId } = useReview();
+    const [uploadReviewMedia] = useUploadReviewMediaMutation();
 
     const onDrop = useCallback(
         async (acceptedFiles: File[]) => {
-            const uploadResult = await uploadImageToS3(acceptedFiles[0], merchantId as string);
-            setFiles((prevState) => [...prevState, { id: uuid(), mediaURL: uploadResult }]);
+            const formdata = new FormData();
+            formdata.append('reviewId', reviewId);
+            formdata.append('merchantId', merchantId);
+            acceptedFiles.map((file: File) => {
+                return formdata.append('files', file);
+            });
+            const uploadResult = (await uploadReviewMedia(formdata).unwrap()) as UploadResult;
+            const reformedUploadResult = uploadResult.map((result) => {
+                return { id: result.id, mediaURL: result.url };
+            });
+            reviewFormHoook.addMedia(reformedUploadResult);
         },
-        [files, setFiles]
+        [reviewFormHoook, reviewId, merchantId, uploadReviewMedia]
     );
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -60,8 +70,8 @@ const MediaWidget = () => {
             <div
                 className={`w-full h-fit grid grid-cols-5 gap-1.5 p-2 border-1 border-[color:var(--color-text)] rounded-lg`}
             >
-                {files.map((file, i) => (
-                    <PreviewComponent media={file} key={i} onDelete={() => handleMediaFileDelete(file)} />
+                {reviewFormHoook.media.map((media: IUploadedMediaObject, idx: number) => (
+                    <PreviewComponent media={media} key={idx} onDelete={() => reviewFormHoook.removeMedia(media)} />
                 ))}
                 {review?.status === 'Completed' ? (
                     <></>

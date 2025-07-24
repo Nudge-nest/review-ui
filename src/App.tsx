@@ -1,7 +1,8 @@
 import { Link, Outlet, Route, Routes } from 'react-router';
 import Review from './components/review';
 import { ReviewProvider } from './contexts/ReviewContext.tsx';
-import useCurrentTheme from './components/hooks/useCurrentTheme.tsx';
+import useCurrentTheme from './hooks/useCurrentTheme.tsx';
+import StoreReview from './components/review/StoreReview.tsx';
 
 const Layout = () => {
     const { currentTheme } = useCurrentTheme();
@@ -41,7 +42,7 @@ const Home = () => {
                 Currently available for Shopify merchants — support for other e-commerce platforms is on the way!
             </p>
             <Link
-                to="/review/1"
+                to="/review/demo"
                 className="text-[color:var(--color-main)] font-normal underline italic mt-4 inline-block text-balance"
             >
                 Try it out now!
@@ -51,12 +52,13 @@ const Home = () => {
 };
 
 const App = () => {
-    console.log("AWS REGION:", import.meta.env.VITE_APP_AWS_REGION);
+    console.log('AWS REGION:', import.meta.env.VITE_APP_AWS_REGION);
     return (
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="review/:id" element={<Review />} />
+                <Route path="store/review/:merchantId" element={<StoreReview />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>
