@@ -2,7 +2,7 @@ import useCurrentTheme from '../hooks/useCurrentTheme.tsx';
 import { ReviewProvider } from '../contexts/ReviewContext.tsx';
 import { Outlet } from 'react-router';
 
-const Layout = () => {
+export const Layout = () => {
     const { currentTheme } = useCurrentTheme();
     return (
         <ReviewProvider>
@@ -15,4 +15,13 @@ const Layout = () => {
     );
 };
 
-export default Layout;
+export const ConfigsLayout = () => {
+    const { currentTheme } = useCurrentTheme();
+    return (
+        <div
+            className={`${currentTheme} w-full mx-auto h-[100vh] px-8 relative bg-[color:var(--color-lighter)] text-[color:var(--color-text)]`}
+        >
+            <Outlet />
+        </div>
+    );
+};

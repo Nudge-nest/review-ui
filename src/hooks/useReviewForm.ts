@@ -107,7 +107,7 @@ export const useReviewForm = (initialData: IReview): UseReviewFormReturn => {
         return hasValidRatings && hasValidComment && hasRatings;
     }, [ratings, comment]);
 
-    console.log('Extracted data', ratings, media , comment);
+    console.log('Extracted data', ratings, media, comment);
 
     // Reset form when initial review changes
     useEffect(() => {

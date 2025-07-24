@@ -12,13 +12,17 @@ const PreviewComponent: FC<{ media: IUploadedMediaObject; onDelete?: () => void 
 
     return (
         <div className="relative w-20 h-20 rounded-lg overflow-hidden">
-            {onDelete ? <button
-                onClick={onDelete}
-                className="absolute top-0 right-0 z-1000 bg-[color:var(--color-main)] rounded-full cursor-pointer"
-                aria-label="Remove media"
-            >
-                <IconXboxXFilled size={20} fill="#fff"/>
-            </button> : <></>}
+            {onDelete ? (
+                <button
+                    onClick={onDelete}
+                    className="absolute top-0 right-0 z-1000 bg-[color:var(--color-main)] rounded-full cursor-pointer"
+                    aria-label="Remove media"
+                >
+                    <IconXboxXFilled size={20} fill="#fff" />
+                </button>
+            ) : (
+                <></>
+            )}
             {isVideo(media.mediaURL) ? (
                 <video src={media.mediaURL} className="w-full h-full object-cover" controls={false} />
             ) : (
