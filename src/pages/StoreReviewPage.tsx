@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useReview } from '../contexts/ReviewContext';
-import Loading from "../components/Loading.tsx";
-import {IReviewItem, IReviewResult} from "../types/review.ts";
+import Loading from '../components/Loading.tsx';
+import { IReviewItem, IReviewResult } from '../types/review.ts';
 import RatingWidget from '../components/review/RatingWidget.tsx';
-import MediaWidget from "../components/review/MediaWidget.tsx";
-import CommentWidget from "../components/review/CommentWidget.tsx";
+import MediaWidget from '../components/review/MediaWidget.tsx';
+import CommentWidget from '../components/review/CommentWidget.tsx';
 
 const StoreReviewPage = () => {
     const { review, sliderHook, isFetching } = useReview();

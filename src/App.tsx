@@ -1,14 +1,11 @@
 import { Route, Routes } from 'react-router';
 
-import LandingPage from "./pages/LandingPage.tsx";
-import NotFound from "./components/NotFound.tsx";
+import LandingPage from './pages/LandingPage.tsx';
+import NotFound from './components/NotFound.tsx';
 import Layout from './components/Layout.tsx';
-import ReviewPage from "./pages/ReviewPage.tsx";
-import StoreReviewPage from "./pages/StoreReviewPage.tsx";
-import ReviewConfigsPage from "./pages/ReviewConfigsPage.tsx";
-
-
-
+import ReviewPage from './pages/ReviewPage.tsx';
+import StoreReviewPage from './pages/StoreReviewPage.tsx';
+import ReviewConfigsPage from './pages/ReviewConfigsPage.tsx';
 
 const App = () => {
     return (

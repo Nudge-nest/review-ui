@@ -1,6 +1,6 @@
-import useCurrentTheme from "../hooks/useCurrentTheme.tsx";
-import {ReviewProvider} from "../contexts/ReviewContext.tsx";
-import {Outlet} from "react-router";
+import useCurrentTheme from '../hooks/useCurrentTheme.tsx';
+import { ReviewProvider } from '../contexts/ReviewContext.tsx';
+import { Outlet } from 'react-router';
 
 const Layout = () => {
     const { currentTheme } = useCurrentTheme();
@@ -14,6 +14,5 @@ const Layout = () => {
         </ReviewProvider>
     );
 };
-
 
 export default Layout;

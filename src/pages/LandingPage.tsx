@@ -1,4 +1,4 @@
-import {Link} from "react-router";
+import { Link } from 'react-router';
 
 const LandingPage = () => {
     return (
@@ -22,6 +22,5 @@ const LandingPage = () => {
         </div>
     );
 };
-
 
 export default LandingPage;

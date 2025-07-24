@@ -4,7 +4,15 @@ import ThankYouComponent from '../ThankYouComponent.tsx';
 import ErrorComponent from '../ErrorComponent.tsx';
 
 const CommentWidget = () => {
-    const { reviewFormHoook, review } = useReview();
+    const { reviewFormHoook, review, reviewId } = useReview();
+
+    const submitReview = () => {
+        if (reviewId === 'demo') {
+            reviewFormHoook.handleSubmitDemo();
+            return;
+        }
+        reviewFormHoook.handleSubmitReview();
+    };
 
     if (reviewFormHoook.isSubmitting === true) return <ThankYouComponent />;
     if (reviewFormHoook.isSubmitting === false) return <ErrorComponent />;
@@ -32,7 +40,7 @@ const CommentWidget = () => {
                 </div>
                 <button
                     className={`w-full h-12 ${review?.status === 'Completed' ? 'bg-[color:var(--color-disabled)]' : 'bg-[color:var(--color-main)]'} rounded-lg cursor-pointer`}
-                    onClick={reviewFormHoook.handleSubmitReview}
+                    onClick={submitReview}
                     disabled={review?.status === 'Completed' || reviewFormHoook.comment.length === 0}
                 >
                     <p className="text-[color:var(--color-text)] text-lg font-semibold">Submit</p>
