@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useReview } from '../contexts/ReviewContext';
+import Loading from "../components/Loading.tsx";
+import {IReviewItem, IReviewResult} from "../types/review.ts";
+import RatingWidget from '../components/review/RatingWidget.tsx';
+import MediaWidget from "../components/review/MediaWidget.tsx";
+import CommentWidget from "../components/review/CommentWidget.tsx";
 
-import { useReview } from '../../contexts/ReviewContext.tsx';
-import RatingWidget from './RatingWidget.tsx';
-import MediaWidget from './MediaWidget.tsx';
-import CommentWidget from './CommentWidget.tsx';
-import Loading from '../Loading.tsx';
-import { IReviewItem, IReviewResult } from '../../types/review.ts';
-
-const Review = () => {
+const ReviewPage = () => {
     const { review, sliderHook, isFetching } = useReview();
     const [items, setItems] = useState<IReviewItem[]>([]);
     const [result, setResult] = useState<IReviewResult[] | undefined>(undefined);
@@ -61,4 +60,4 @@ const Review = () => {
     );
 };
 
-export default Review;
+export default ReviewPage;
