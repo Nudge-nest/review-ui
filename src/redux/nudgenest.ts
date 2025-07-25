@@ -5,7 +5,7 @@ export const nudgeNestApi = createApi({
     reducerPath: 'nudgeNestApi',
     tagTypes: ['review', 'media'],
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_APP_BACKEND_HOST_LOCAL,
+        baseUrl: import.meta.env.VITE_APP_BACKEND_HOST,
     }),
     endpoints: (builder) => {
         return {
