@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useReview } from '../contexts/ReviewContext';
+import Loading from '../components/Loading.tsx';
+import { IReviewItem, IReviewResult } from '../types/review.ts';
+import RatingWidget from '../components/review/RatingWidget.tsx';
+import MediaWidget from '../components/review/MediaWidget.tsx';
+import CommentWidget from '../components/review/CommentWidget.tsx';
 
-import { IReviewItem, IReviewResult, useReview } from '../../contexts/ReviewContext.tsx';
-import RatingWidget from './RatingWidget.tsx';
-import MediaWidget from './MediaWidget.tsx';
-import CommentWidget from './CommentWidget.tsx';
-import Loading from '../Loading.tsx';
-
-const Review = () => {
-    const { review, sliderRef, loaded, instanceRef, currentSlide, isFetching } = useReview();
+const ReviewPage = () => {
+    const { review, sliderHook, isFetching } = useReview();
     const [items, setItems] = useState<IReviewItem[]>([]);
     const [result, setResult] = useState<IReviewResult[] | undefined>(undefined);
     useEffect(() => {
@@ -19,7 +19,7 @@ const Review = () => {
     if (isFetching) return <Loading />;
     return (
         <div className={`h-full px-4 text-center grid grid-rows-[95%_auto]`}>
-            <div ref={sliderRef} className="h-full scroll-auto keen-slider">
+            <div ref={sliderHook.sliderRef} className="h-full scroll-auto keen-slider">
                 <div
                     className={`h-full flex flex-col gap-2 ${items.length <= 1 ? 'justify-center' : 'justify-start'} pt-4 keen-slider__slide overflow-auto`}
                 >
@@ -41,16 +41,16 @@ const Review = () => {
                     <CommentWidget />
                 </div>
             </div>
-            {loaded && instanceRef.current && (
+            {sliderHook.loaded && sliderHook.instanceRef.current && (
                 <div className="w-full dots flex justify-center-safe gap-4 py-2">
-                    {[...Array(instanceRef.current.track.details.slides.length).keys()].map((idx) => {
+                    {[...Array(sliderHook.instanceRef.current.track.details.slides.length).keys()].map((idx) => {
                         return (
                             <button
                                 key={idx}
                                 onClick={() => {
-                                    instanceRef.current?.moveToIdx(idx);
+                                    sliderHook.instanceRef.current?.moveToIdx(idx);
                                 }}
-                                className={`dot w-20 h-1.5 rounded ${idx <= currentSlide ? 'active bg-[color:var(--color-main)]' : 'bg-[color:var(--color-disabled)]'}`}
+                                className={`dot w-20 h-1.5 rounded ${idx <= sliderHook.currentSlide ? 'active bg-[color:var(--color-main)]' : 'bg-[color:var(--color-disabled)]'}`}
                             ></button>
                         );
                     })}
@@ -60,4 +60,4 @@ const Review = () => {
     );
 };
 
-export default Review;
+export default ReviewPage;

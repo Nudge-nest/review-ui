@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IReview } from '../contexts/ReviewContext.tsx';
+import { IReview } from '../types/review.ts';
 
 export const nudgeNestApi = createApi({
     reducerPath: 'nudgeNestApi',
-    tagTypes: ['review'],
+    tagTypes: ['review', 'media'],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_APP_BACKEND_HOST,
     }),
@@ -26,10 +26,32 @@ export const nudgeNestApi = createApi({
                 transformResponse: (response: { data: any }) => response.data,
                 invalidatesTags: ['review'],
             }),
+            uploadReviewMedia: builder.mutation({
+                query: (formData) => ({
+                    url: `media`,
+                    method: 'POST',
+                    body: formData,
+                }),
+                transformResponse: (response: { data: any }) => response.data,
+                invalidatesTags: ['media'],
+            }),
+            deleteReviewMedia: builder.mutation({
+                query: (mediaUrl: string) => ({
+                    url: `media/${mediaUrl}`,
+                    method: 'DELETE',
+                }),
+                transformResponse: (response: { data: any }) => response.data,
+                invalidatesTags: ['media'],
+            }),
         };
     },
 });
 
-export const { useGetReviewQuery, useUpdateReviewMutation } = nudgeNestApi;
+export const {
+    useGetReviewQuery,
+    useUpdateReviewMutation,
+    useUploadReviewMediaMutation,
+    useDeleteReviewMediaMutation,
+} = nudgeNestApi;
 
 export const { endpoints, reducerPath, reducer, middleware } = nudgeNestApi;

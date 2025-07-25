@@ -9,17 +9,9 @@ steps:
         - |
           cat <<EOF > /workspace/.env
           VITE_APP_BACKEND_HOST=$$VITE_APP_BACKEND_HOST
-          VITE_APP_AWS_BUCKET_NAME=$$VITE_APP_AWS_BUCKET_NAME
-          VITE_APP_AWS_ACCESS_KEY=$$VITE_APP_AWS_ACCESS_KEY
-          VITE_APP_AWS_SECRET_KEY=$$VITE_APP_AWS_SECRET_KEY
-          VITE_APP_AWS_REGION=$$VITE_APP_AWS_REGION
           EOF
       secretEnv: # Secrets are masked in logs
         - 'VITE_APP_BACKEND_HOST'
-        - 'VITE_APP_AWS_ACCESS_KEY'
-        - 'VITE_APP_AWS_SECRET_KEY'
-        - 'VITE_APP_AWS_REGION'
-        - 'VITE_APP_AWS_BUCKET_NAME'
 
     #  step 2: Build docker image from dockerfile in the root of the repo (accesses /workspace/.env)
     - name: 'gcr.io/cloud-builders/docker'
@@ -34,10 +26,6 @@ steps:
       dir: '/workspace'  # Ensure Dockerfile is in /workspace
       secretEnv: # Make secrets available to this step
         - 'VITE_APP_BACKEND_HOST'
-        - 'VITE_APP_AWS_ACCESS_KEY'
-        - 'VITE_APP_AWS_SECRET_KEY'
-        - 'VITE_APP_AWS_REGION'
-        - 'VITE_APP_AWS_BUCKET_NAME'
       id: 'build'
       waitFor: ['create-env']
 
@@ -82,12 +70,4 @@ availableSecrets:
     secretManager:
         - versionName: 'projects/$PROJECT_ID/secrets/VITE_APP_BACKEND_HOST/versions/2'
           env: 'VITE_APP_BACKEND_HOST'
-        - versionName: 'projects/$PROJECT_ID/secrets/VITE_APP_AWS_ACCESS_KEY/versions/1'
-          env: 'VITE_APP_AWS_ACCESS_KEY'
-        - versionName: 'projects/$PROJECT_ID/secrets/VITE_APP_AWS_SECRET_KEY/versions/1'
-          env: 'VITE_APP_AWS_SECRET_KEY'
-        - versionName: 'projects/$PROJECT_ID/secrets/VITE_APP_AWS_REGION/versions/1'
-          env: 'VITE_APP_AWS_REGION'
-        - versionName: 'projects/$PROJECT_ID/secrets/VITE_APP_AWS_BUCKET_NAME/versions/1'
-          env: 'VITE_APP_AWS_BUCKET_NAME'
 # [END cloudbuild_quickstart_build]
