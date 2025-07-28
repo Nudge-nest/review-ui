@@ -19,14 +19,14 @@ interface TabsProps {
 }
 
 const Tabs: React.FC<TabsProps> = ({
-                                       tabs,
-                                       defaultTab,
-                                       variant = 'default',
-                                       size = 'md',
-                                       orientation = 'horizontal',
-                                       className = '',
-                                       onTabChange
-                                   }) => {
+    tabs,
+    defaultTab,
+    variant = 'default',
+    size = 'md',
+    orientation = 'horizontal',
+    className = '',
+    onTabChange,
+}) => {
     const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id);
 
     const handleTabClick = (tabId: string, disabled?: boolean) => {
@@ -35,13 +35,13 @@ const Tabs: React.FC<TabsProps> = ({
         onTabChange?.(tabId);
     };
 
-    const activeContent = tabs.find(tab => tab.id === activeTab)?.content;
+    const activeContent = tabs.find((tab) => tab.id === activeTab)?.content;
 
     // Size variants
     const sizeClasses = {
         sm: 'text-sm px-3 py-1.5',
         md: 'text-base px-4 py-2',
-        lg: 'text-lg px-6 py-3'
+        lg: 'text-lg px-6 py-3',
     };
 
     // Variant styles
@@ -65,25 +65,18 @@ const Tabs: React.FC<TabsProps> = ({
                 ? 'text-blue-600 border-b-2 border-blue-600'
                 : 'text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300',
 
-            minimal: isActive
-                ? 'text-blue-600 bg-blue-50'
-                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+            minimal: isActive ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50',
         };
 
         return `${baseClasses} ${variants[variant]}`;
     };
 
-    const containerClasses = orientation === 'vertical'
-        ? 'flex gap-6'
-        : 'flex flex-col';
+    const containerClasses = orientation === 'vertical' ? 'flex gap-6' : 'flex flex-col';
 
-    const tabListClasses = orientation === 'vertical'
-        ? 'flex flex-col gap-2 min-w-[200px]'
-        : 'flex gap-2 border-b border-gray-200 mb-6';
+    const tabListClasses =
+        orientation === 'vertical' ? 'flex flex-col gap-2 min-w-[200px]' : 'flex gap-2 border-b border-gray-200 mb-6';
 
-    const contentClasses = orientation === 'vertical'
-        ? 'flex-1 pl-6 border-l border-gray-200'
-        : 'min-h-[200px]';
+    const contentClasses = orientation === 'vertical' ? 'flex-1 pl-6 border-l border-gray-200' : 'min-h-[200px]';
 
     return (
         <div className={`w-full ${containerClasses} ${className}`}>
@@ -108,15 +101,8 @@ const Tabs: React.FC<TabsProps> = ({
             </div>
 
             {/* Tab Content */}
-            <div
-                className={contentClasses}
-                role="tabpanel"
-                id={`panel-${activeTab}`}
-                aria-labelledby={activeTab}
-            >
-                <div className="animate-fadeIn">
-                    {activeContent}
-                </div>
+            <div className={contentClasses} role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={activeTab}>
+                <div className="animate-fadeIn">{activeContent}</div>
             </div>
         </div>
     );
