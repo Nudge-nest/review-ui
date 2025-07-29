@@ -6,6 +6,11 @@ interface IHeaderTextComponentProps {
     subTitle?: string;
 }
 
+const disabledStyle = `px-6 py-3 cursor-wait bg-[color:var(--color-disabled)] hover:bg-[color:var(--color-disabled)]
+                    text-[color:var(--color-text)] font-medium rounded-lg transition-colors focus:outline-none focus:none`
+const activeStyle = `px-6 py-3 cursor-pointer bg-[color:var(--color-main)] hover:bg-[color:var(--color-main)]
+                    text-[color:var(--color-text)] font-medium rounded-lg transition-colors focus:outline-none focus:none`
+
 export const HeaderTextComponent: FC<IHeaderTextComponentProps> = ({ title, subTitle }) => {
     const { reviewConfigFormHoook } = useReviewConfig();
     return (
@@ -20,8 +25,7 @@ export const HeaderTextComponent: FC<IHeaderTextComponentProps> = ({ title, subT
             <div className="mt-8 flex justify-end">
                 <button
                     onClick={reviewConfigFormHoook.handleUpdateReviewConfig}
-                    className="px-6 py-3 cursor-pointer bg-[color:var(--color-main)] hover:bg-[color:var(--color-main)]
-                    text-[color:var(--color-text)] font-medium rounded-lg transition-colors focus:outline-none focus:none"
+                    className={reviewConfigFormHoook.isEditing ? activeStyle : disabledStyle}
                 >
                     Save Configuration
                 </button>

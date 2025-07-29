@@ -8,6 +8,8 @@ interface UseReviewConfigFormReturn {
     reviewConfigs: IReviewConfiguration | null;
     isSubmitting: boolean | undefined;
     setIsSubmitting: (value: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
+    isEditing: boolean ;
+    setIsEditing: (value: boolean | ((prev: boolean ) => boolean )) => void;
 
     // Actions - ORIGINAL FUNCTION NAMES
     handleUpdateReviewConfig: () => Promise<void>; // ORIGINAL NAME
@@ -24,6 +26,7 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
     const [isSubmitting, setIsSubmitting] = useState<boolean | undefined>(undefined);
     const [error, setError] = useState<string | null>(null);
     const { updateReviewConfigs } = useReviewConfigData(reviewConfigs ? reviewConfigs.merchantId : '');
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     useEffect(() => {
         if (initialData && !reviewConfigs) setReviewConfigs(initialData);
@@ -48,8 +51,7 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
 
     const handleFieldChange = useCallback(
         (key: string, value: string | number | boolean, propName: keyof Omit<IReviewConfiguration, 'merchantId'>) => {
-            console.log('Handling field change', key, value, propName);
-
+            setIsEditing(true);
             setReviewConfigs((prev) => {
                 if (!prev || !prev[propName]) return prev;
 
@@ -74,6 +76,8 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
         // Data - KEEP ORIGINAL STRUCTURE
         reviewConfigs,
         isSubmitting,
+        isEditing,
+        setIsEditing,
 
         // Actions - KEEP ORIGINAL FUNCTION NAMES
         setIsSubmitting,
