@@ -24,7 +24,6 @@ export const ReviewConfigProvider: FC<{ children: ReactNode }> = ({ children }) 
     const { reviewConfigs, isError, isLoading, isFetching } = useReviewConfigData(merchantId as string);
     const formHook = useReviewConfigForm(reviewConfigs);
 
-
     // Error state
     if (isError) return <ErrorComponent message="Nothing to see here!" />;
 

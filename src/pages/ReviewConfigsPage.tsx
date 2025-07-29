@@ -3,7 +3,6 @@ import Tabs from '../components/TabComponent';
 import { useMemo } from 'react';
 import { useReviewConfig } from '../contexts/ReviewConfigContext.tsx';
 import ReviewPublishConfigsComponent from '../components/configs/ReviewPublishConfigsComponent.tsx';
-import HeaderTextComponent from '../components/configs/HeaderTextComponent.tsx';
 import ReviewEmailContentComponent from '../components/configs/ReviewEmailContentComponent.tsx';
 import ReviewEmailReminderComponent from '../components/configs/ReviewEmailReminderComponent.tsx';
 import ReviewQrCodeComponent from '../components/configs/ReviewQrCodeComponent.tsx';
@@ -54,11 +53,10 @@ const ReviewConfigsPage = () => {
 
     return (
         <div className={`pt-8`}>
-            <HeaderTextComponent />
             <Tabs
                 tabs={_Tabs}
-                variant="underline"
-                size="md"
+                variant="minimal"
+                size="sm"
                 onTabChange={(id) => console.log('Tab changed:', id)}
                 defaultTab="review"
             />

@@ -1,6 +1,6 @@
-import {useState, useCallback, useEffect} from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { IReviewConfiguration } from '../types/reviewConfigs.ts';
-import {useReviewConfigData} from "./useReviewConfigData.ts";
+import { useReviewConfigData } from './useReviewConfigData.ts';
 
 // Updated type definitions to match original API
 interface UseReviewConfigFormReturn {
@@ -23,7 +23,7 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
     // UI state
     const [isSubmitting, setIsSubmitting] = useState<boolean | undefined>(undefined);
     const [error, setError] = useState<string | null>(null);
-    const {updateReviewConfigs} = useReviewConfigData(reviewConfigs? reviewConfigs.merchantId : '');
+    const { updateReviewConfigs } = useReviewConfigData(reviewConfigs ? reviewConfigs.merchantId : '');
 
     useEffect(() => {
         if (initialData && !reviewConfigs) setReviewConfigs(initialData);
@@ -32,12 +32,12 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
     // KEEP ORIGINAL FUNCTION NAMES
     const handleUpdateReviewConfig = useCallback(async (): Promise<void> => {
         //TODO : Validations
-        if (!reviewConfigs)return;
+        if (!reviewConfigs) return;
         setIsSubmitting(true);
         setError(null);
 
         try {
-            updateReviewConfigs({reviewConfigs: reviewConfigs, merchantId : reviewConfigs.merchantId});
+            updateReviewConfigs({ reviewConfigs: reviewConfigs, merchantId: reviewConfigs.merchantId });
         } catch (error: any) {
             setError(error.message || 'Failed to submit review');
             console.error('Submit review error:', error);
@@ -46,26 +46,25 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
         }
     }, [reviewConfigs, updateReviewConfigs, setIsSubmitting, setError]);
 
-    const handleFieldChange = useCallback((
-        key: string,
-        value: string | number | boolean,
-        propName: keyof Omit<IReviewConfiguration, 'merchantId'>
-    ) => {
-        console.log('Handling field change', key, value, propName);
+    const handleFieldChange = useCallback(
+        (key: string, value: string | number | boolean, propName: keyof Omit<IReviewConfiguration, 'merchantId'>) => {
+            console.log('Handling field change', key, value, propName);
 
-        setReviewConfigs((prev) => {
-            if (!prev || !prev[propName]) return prev;
+            setReviewConfigs((prev) => {
+                if (!prev || !prev[propName]) return prev;
 
-            return {
-                ...prev,
-                [propName]: prev[propName].map((field) =>
-                    field.key === key
-                        ? { ...field, value: String(value) } // Convert to string since your interface expects string
-                        : field
-                )
-            };
-        });
-    }, []);
+                return {
+                    ...prev,
+                    [propName]: prev[propName].map((field) =>
+                        field.key === key
+                            ? { ...field, value: String(value) } // Convert to string since your interface expects string
+                            : field
+                    ),
+                };
+            });
+        },
+        []
+    );
 
     const handleSubmitDemo = useCallback(() => {
         setIsSubmitting(true);

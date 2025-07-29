@@ -65,7 +65,9 @@ const Tabs: React.FC<TabsProps> = ({
                 ? 'text-blue-600 border-b-2 border-blue-600'
                 : 'text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300',
 
-            minimal: isActive ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50',
+            minimal: isActive
+                ? 'text-[color:var(--color-main)] bg-[color:var(--color-main-light)]'
+                : 'text-[color:var(--color-text)] hover:text-[color:var(--color-gray)] hover:bg-[color:var(--color-light)]',
         };
 
         return `${baseClasses} ${variants[variant]}`;

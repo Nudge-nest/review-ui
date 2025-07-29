@@ -25,7 +25,7 @@ interface ConfigField {
 
 interface ConfigRowProps {
     field: ConfigField;
-    onFieldChange: (key: string, value: string | number | boolean, objPropName:string) => void;
+    onFieldChange: (key: string, value: string | number | boolean, objPropName: string) => void;
     className?: string;
     objPropName: string;
 }
@@ -52,7 +52,7 @@ const ConfigRowComponent: React.FC<ConfigRowProps> = ({ field, onFieldChange, cl
 
     const renderInput = () => {
         const baseClasses =
-            'w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors';
+            'w-full px-3 py-2 bg-[color:var(--color-bg)] border border-gray-600 rounded-md text-[color:var(--color-text)] placeholder-[color:var(--color-text)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors';
         const disabledClasses = field.disabled ? 'opacity-50 cursor-not-allowed' : '';
         const inputClasses = `${baseClasses} ${disabledClasses}`;
 
@@ -165,13 +165,13 @@ const ConfigRowComponent: React.FC<ConfigRowProps> = ({ field, onFieldChange, cl
 
     return (
         <div
-            className={`grid grid-cols-3 gap-6 py-4 px-6 border border-gray-700 rounded-lg bg-gray-800 hover:bg-gray-750 transition-colors ${className}`}
+            className={`grid grid-cols-3 gap-6 py-2 px-4 border border-[color:var(--color-border)] rounded-lg bg-[color:var(--color-bg)] hover:bg-[color:var(--color-lighter)] transition-colors ${className}`}
         >
             {/* Label Column */}
             <div className="flex items-center">
-                <label className="text-white font-medium text-sm">
+                <label className="text-[color:var(--color-text)] font-medium text-sm">
                     {formatLabel(field.key)}
-                    {field.required && <span className="text-red-400 ml-1">*</span>}
+                    {field.required && <span className="text-[color:var(--color-error)] ml-1">*</span>}
                 </label>
             </div>
 
@@ -180,7 +180,7 @@ const ConfigRowComponent: React.FC<ConfigRowProps> = ({ field, onFieldChange, cl
 
             {/* Description Column */}
             <div className="flex items-center">
-                <p className="text-gray-400 text-sm leading-relaxed">{field.description}</p>
+                <p className="text-[color:var(--color-text)] text-sm leading-relaxed">{field.description}</p>
             </div>
         </div>
     );

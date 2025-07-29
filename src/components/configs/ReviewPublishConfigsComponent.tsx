@@ -29,22 +29,13 @@ const ReviewPublishConfigsComponent = () => {
                                 key={field.key}
                                 field={fieldWithOptions}
                                 onFieldChange={reviewConfigFormHoook.handleFieldChange}
-                                objPropName='publish'
+                                objPropName="publish"
                             />
                         );
                     })
                 ) : (
                     <Loading />
                 )}
-            </div>
-            {/* Save Button */}
-            <div className="mt-8 flex justify-end">
-                <button
-                    onClick={reviewConfigFormHoook.handleUpdateReviewConfig}
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                >
-                    Save Configuration
-                </button>
             </div>
         </div>
     );
