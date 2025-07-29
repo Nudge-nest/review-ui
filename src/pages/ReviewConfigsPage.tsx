@@ -1,65 +1,62 @@
 import { IconAbc, IconCalendarBolt, IconMailCode, IconQrcode, IconUserScreen } from '@tabler/icons-react';
 import Tabs from '../components/TabComponent';
-import { FC } from 'react';
-
-const tabs = [
-    {
-        id: 'review',
-        label: 'Review Publishing',
-        icon: <IconUserScreen />, // optional
-        disabled: false, // optional
-        content: <div>PUblishing reviews</div>,
-    },
-    {
-        id: 'email',
-        label: 'Email Content',
-        icon: <IconMailCode />, // optional
-        disabled: false, // optional
-        content: <div>Email Content</div>,
-    },
-    {
-        id: 'reminder',
-        label: 'Reminder Settings',
-        icon: <IconCalendarBolt />, // optional
-        disabled: false, // optional
-        content: <div>Reminder Settings</div>,
-    },
-    {
-        id: 'qr',
-        label: 'QR Code',
-        icon: <IconQrcode />, // optional
-        disabled: false, // optional
-        content: <div>QR Code</div>,
-    },
-    {
-        id: 'general',
-        label: 'General Settings',
-        icon: <IconAbc />, // optional
-        disabled: false, // optional
-        content: <div>General Settings</div>,
-    },
-];
-
-interface IHeaderTextComponentProps {
-    title?: string;
-    subTitle?: string;
-}
-
-const HeaderTextComponent: FC<IHeaderTextComponentProps> = ({title, subTitle}) => {
-    return(
-        <>
-            <h3 className={`font-bold text-2xl text-[color:var(--color-text)]`}>{title?title:""}</h3>
-            <p>{subTitle?subTitle:""}</p>
-        </>
-    )
-}
+import { useMemo } from 'react';
+import { useReviewConfig } from '../contexts/ReviewConfigContext.tsx';
+import ReviewPublishConfigsComponent from '../components/configs/ReviewPublishConfigsComponent.tsx';
+import HeaderTextComponent from '../components/configs/HeaderTextComponent.tsx';
+import ReviewEmailContentComponent from '../components/configs/ReviewEmailContentComponent.tsx';
+import ReviewEmailReminderComponent from '../components/configs/ReviewEmailReminderComponent.tsx';
+import ReviewQrCodeComponent from '../components/configs/ReviewQrCodeComponent.tsx';
+import ReviewGeneralSettingsComponent from '../components/configs/ReviewGeneralSettingsComponent.tsx';
 
 const ReviewConfigsPage = () => {
+    const { reviewConfigFormHoook } = useReviewConfig();
+
+    const _Tabs = useMemo(() => {
+        return [
+            {
+                id: 'review',
+                label: 'Review Publishing',
+                icon: <IconUserScreen />, // optional
+                disabled: false, // optional
+                content: <ReviewPublishConfigsComponent />,
+            },
+            {
+                id: 'email',
+                label: 'Email Content',
+                icon: <IconMailCode />, // optional
+                disabled: false, // optional
+                content: <ReviewEmailContentComponent />,
+            },
+            {
+                id: 'reminder',
+                label: 'Reminder Settings',
+                icon: <IconCalendarBolt />, // optional
+                disabled: false, // optional
+                content: <ReviewEmailReminderComponent />,
+            },
+            {
+                id: 'qr',
+                label: 'QR Code',
+                icon: <IconQrcode />, // optional
+                disabled: false, // optional
+                content: <ReviewQrCodeComponent />,
+            },
+            {
+                id: 'general',
+                label: 'General Settings',
+                icon: <IconAbc />, // optional
+                disabled: false, // optional
+                content: <ReviewGeneralSettingsComponent />,
+            },
+        ];
+    }, [reviewConfigFormHoook.reviewConfigs]);
+
     return (
         <div className={`pt-8`}>
-            <HeaderTextComponent/>
+            <HeaderTextComponent />
             <Tabs
-                tabs={tabs}
+                tabs={_Tabs}
                 variant="underline"
                 size="md"
                 onTabChange={(id) => console.log('Tab changed:', id)}

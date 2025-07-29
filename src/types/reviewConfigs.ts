@@ -1,0 +1,72 @@
+// Type for individual configuration fields
+type FieldType = 'text' | 'number' | 'select' | 'url' | 'image' | 'boolean' | 'json';
+
+interface IConfigField {
+    key: string;
+    value: string;
+    description: string;
+    type: FieldType;
+}
+
+// Main interface for the review configuration
+export interface IReviewConfiguration {
+    merchantId: string;
+    emailContent: IConfigField[];
+    reminderEmailContent: IConfigField[];
+    remindersFrequency: IConfigField[];
+    publish: IConfigField[];
+    qrCode: IConfigField[];
+    general: IConfigField[];
+}
+
+// Optional: More specific interfaces if you want stricter typing
+interface IEmailContentField extends IConfigField {
+    key: 'subject' | 'body' | 'buttonText';
+    type: 'text';
+}
+
+interface IReminderEmailContentField extends IConfigField {
+    key: 'reminderSubject' | 'reminderBody' | 'reminderButtonText';
+    type: 'text';
+}
+
+interface IRemindersFrequencyField extends IConfigField {
+    key: 'remindersQty' | 'remindersPeriod';
+    type: 'number' | 'select';
+}
+
+export interface IPublishField extends IConfigField {
+    key: 'autoPublish';
+    type: 'select';
+    value: 'THREESTARS' | 'FOURSTARS' | 'FIVESTARS';
+}
+
+interface IQrCodeField extends IConfigField {
+    key: 'qrCodeUrl' | 'qrCodeData';
+    type: 'url' | 'image';
+}
+
+// Stricter version of the main interface (optional)
+export interface IStrictReviewConfiguration {
+    merchantId: string;
+    emailContent: IEmailContentField[];
+    reminderEmailContent: IReminderEmailContentField[];
+    remindersFrequency: IRemindersFrequencyField[];
+    publish: IPublishField[];
+    qrCode: IQrCodeField[];
+    general: IConfigField[];
+}
+
+// If you need specific enums
+enum ReminderPeriod {
+    BIWEEKLY = 'BIWEEKLY',
+    WEEKLY = 'WEEKLY',
+    BIMONTHLY = 'BIMONTHLY',
+    MONTHLY = 'MONTHLY',
+}
+
+enum AutoPublishThreshold {
+    THREESTARS = 'THREESTARS',
+    FOURSTARS = 'FOURSTARS',
+    FIVESTARS = 'FIVESTARS',
+}
