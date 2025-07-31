@@ -16,6 +16,7 @@
     "@tabler/icons-react": "^3.34.0",
     "@tailwindcss/vite": "^4.1.11",
     "keen-slider": "^6.8.6",
+    "qrcode": "^1.5.4",
     "react": "^19.1.0",
     "react-cookie": "^8.0.1",
     "react-dom": "^19.1.0",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^3.10.2",
