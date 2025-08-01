@@ -5,18 +5,21 @@ import { IReviewItem, IReviewResult } from '../types/review.ts';
 import RatingWidget from '../components/review/RatingWidget.tsx';
 import MediaWidget from '../components/review/MediaWidget.tsx';
 import CommentWidget from '../components/review/CommentWidget.tsx';
+import { useRenderCount } from 'rooks';
 
 const StoreReviewPage = () => {
-    const { review, sliderHook, isFetching } = useReview();
+    const renderCount = useRenderCount();
+    console.log('Render Count', renderCount);
+    const { shopReview, sliderHook, isLoadingMerchant } = useReview();
     const [items, setItems] = useState<IReviewItem[]>([]);
     const [result, setResult] = useState<IReviewResult[] | undefined>(undefined);
     useEffect(() => {
-        if (review) {
-            setItems(review.items);
-            if (review.result) setResult(review.result);
+        if (shopReview) {
+            setItems(shopReview.items);
+            if (shopReview.result) setResult(shopReview.result);
         }
-    }, [review]);
-    if (isFetching) return <Loading />;
+    }, [shopReview]);
+    if (isLoadingMerchant) return <Loading />;
     return (
         <div className={`h-full px-4 text-center grid grid-rows-[95%_auto]`}>
             <div ref={sliderHook.sliderRef} className="h-full scroll-auto keen-slider">

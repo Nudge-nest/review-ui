@@ -1,5 +1,5 @@
 export interface IReview {
-    id: string;
+    id?: string;
     merchantId: string;
     items: IReviewItem[];
     result?: IReviewResult[];
