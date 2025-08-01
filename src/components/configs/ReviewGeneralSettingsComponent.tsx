@@ -3,6 +3,7 @@ import Loading from '../Loading.tsx';
 import { useReviewConfig } from '../../contexts/ReviewConfigContext.tsx';
 import HeaderTextComponent from './HeaderTextComponent.tsx';
 import ColumnHeaderComponent from './ColumnHeaderComponent.tsx';
+import {IConfigField} from "../../types/reviewConfigs.ts";
 
 const ReviewGeneralSettingsComponent = () => {
     const { reviewConfigs, reviewConfigFormHoook } = useReviewConfig();
@@ -16,7 +17,7 @@ const ReviewGeneralSettingsComponent = () => {
             {/* Configuration Rows */}
             <div className="space-y-3">
                 {reviewConfigs?.general ? (
-                    shopReviewQuestions.map((field) => {
+                    shopReviewQuestions.map((field:IConfigField) => {
                         return (
                             <ConfigRowComponent
                                 key={field.key}

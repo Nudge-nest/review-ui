@@ -11,6 +11,6 @@ export const calculateReviewRating = (review: IReview): number => {
     const result = review.result || [];
     const numericalResults = result.filter((res) => res.value);
     if (numericalResults.length === 0) return 5;
-    const total = numericalResults.reduce((sum, res) => sum + res.value, 0);
+    const total = numericalResults.reduce((sum, res:any) => sum + res.value, 0);
     return total / numericalResults.length;
 };

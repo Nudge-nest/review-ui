@@ -61,16 +61,3 @@ export interface IStrictReviewConfiguration {
     general: IGeneralConfigs;
 }
 
-// If you need specific enums
-enum ReminderPeriod {
-    BIWEEKLY = 'BIWEEKLY',
-    WEEKLY = 'WEEKLY',
-    BIMONTHLY = 'BIMONTHLY',
-    MONTHLY = 'MONTHLY',
-}
-
-enum AutoPublishThreshold {
-    THREESTARS = 'THREESTARS',
-    FOURSTARS = 'FOURSTARS',
-    FIVESTARS = 'FIVESTARS',
-}
