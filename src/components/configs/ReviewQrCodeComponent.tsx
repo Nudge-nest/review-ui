@@ -13,8 +13,8 @@ const ReviewQrCodeComponent = () => {
     const [hasGenerated, setHasGenerated] = useState(false);
 
     // Find the current values
-    const qrCodeUrl = reviewConfigs?.qrCode?.find(field => field.key === 'qrCodeUrl')?.value || '';
-    const qrCodeData = reviewConfigs?.qrCode?.find(field => field.key === 'qrCodeData')?.value || '';
+    const qrCodeUrl = reviewConfigs?.qrCode?.find((field) => field.key === 'qrCodeUrl')?.value || '';
+    const qrCodeData = reviewConfigs?.qrCode?.find((field) => field.key === 'qrCodeData')?.value || '';
 
     // Generate review URL
     const generateReviewUrl = () => {
@@ -53,7 +53,7 @@ const ReviewQrCodeComponent = () => {
     useEffect(() => {
         const generateInitialQrCode = async () => {
             // Only generate if we have merchantId and fields are truly empty
-            if ( !reviewConfigs?.qrCode || hasGenerated) return;
+            if (!reviewConfigs?.qrCode || hasGenerated) return;
 
             // If data already exists, don't regenerate
             if (qrCodeUrl && qrCodeData) {
@@ -83,7 +83,7 @@ const ReviewQrCodeComponent = () => {
         };
 
         generateInitialQrCode();
-    }, [ reviewConfigs?.qrCode]); // Minimal dependencies
+    }, [reviewConfigs?.qrCode]); // Minimal dependencies
 
     // Handle manual URL changes
     const handleUrlChange = async (key: string, value: string | number | boolean) => {
@@ -144,11 +144,7 @@ const ReviewQrCodeComponent = () => {
                                         </div>
                                     ) : qrCodeImage ? (
                                         <div className="bg-white p-4 rounded-lg">
-                                            <img
-                                                src={qrCodeImage}
-                                                alt="Review QR Code"
-                                                className="w-40 h-40"
-                                            />
+                                            <img src={qrCodeImage} alt="Review QR Code" className="w-40 h-40" />
                                         </div>
                                     ) : (
                                         <div className="w-48 h-48 bg-gray-700 rounded-lg flex items-center justify-center">
