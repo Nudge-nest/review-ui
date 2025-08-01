@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
 
-const ErrorComponent: FC<{ message?: string; Icon?: any }> = ({ Icon, message }) => {
+const ThankYouComponent: FC<{ message?: string; Icon?: any }> = ({ Icon, message }) => {
     return (
         <div className="flex flex-col gap-2 items-center">
             {Icon ? <Icon /> : <IconRosetteDiscountCheckFilled size={70} fill="#00a63e" />}
@@ -11,4 +11,4 @@ const ErrorComponent: FC<{ message?: string; Icon?: any }> = ({ Icon, message })
     );
 };
 
-export default ErrorComponent;
+export default ThankYouComponent;
