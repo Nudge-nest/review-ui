@@ -54,8 +54,16 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const { id } = useParams<{ id: string }>();
     const { pathname } = useLocation();
     const reviewId = resolveReviewId(id as string, pathname);
-    const { review, reviewStatus, isError, isLoading, isFetching, merchantConfigs, merchantId, isLoadingMerchantConfigs } =
-        useReviewData(reviewId, pathname);
+    const {
+        review,
+        reviewStatus,
+        isError,
+        isLoading,
+        isFetching,
+        merchantConfigs,
+        merchantId,
+        isLoadingMerchantConfigs,
+    } = useReviewData(reviewId, pathname);
     const sliderHook = useSlider(3);
     const formHook = useReviewForm(review as IReview);
     const [shopReview, setShopReview] = useState<IReview | null>(null);

@@ -12,7 +12,7 @@ interface RatingWidgetProps {
 const MAX_RATING = 5;
 const RATING_ARRAY = Array.from({ length: MAX_RATING });
 
-const RatingWithProduct: FC<{ itemName: string, image? : string }> = ({ itemName, image }) => {
+const RatingWithProduct: FC<{ itemName: string; image?: string }> = ({ itemName, image }) => {
     return (
         <>
             <img

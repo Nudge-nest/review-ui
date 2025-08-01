@@ -21,9 +21,9 @@ export const useReviewData = (reviewId: string, pathname: string) => {
         return data || null;
     }, [data, reviewId]);
 
-    const merchantConfigs = useMemo(()=>{
+    const merchantConfigs = useMemo(() => {
         return merchantConf;
-    }, [merchantConf])
+    }, [merchantConf]);
 
     console.log('Review data', review, merchantConfigs, pathname.split('/')[3]);
 
