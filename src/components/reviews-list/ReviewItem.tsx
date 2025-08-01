@@ -1,14 +1,14 @@
 import { FC } from 'react';
-import { IReviewResult, IUploadedMediaObject, ReviewItemProps } from '../../types/review.ts';
+import { ReviewItemProps } from '../../types/review.ts';
 import { calculateReviewRating, sanitizeReviewText } from '../../utils/reviewsListing.ts';
 import { IconPhoto } from '@tabler/icons-react';
 import StarRating from './StarRating.tsx';
 
 const ReviewItem: FC<ReviewItemProps> = ({ review, onMediaClick }) => {
     const result = review.result || [];
-    const numericalResults = result.filter(
+    /*const numericalResults = result.filter(
         (res): res is IReviewResult & { value: number } => res.value !== undefined && res.value !== null
-    );
+    );*/
     const nonNumericalResults = result.filter((res) => !res.value);
     const rating = calculateReviewRating(review);
 
@@ -16,7 +16,7 @@ const ReviewItem: FC<ReviewItemProps> = ({ review, onMediaClick }) => {
     const comment = nonNumericalResults[nonNumericalResults.length - 1]?.comment || '';
 
     // Collect all media from all results
-    const allMedia: IUploadedMediaObject[] = nonNumericalResults.filter((res) => res.mediaURL);
+    const allMedia: any[] = nonNumericalResults.filter((res: any) => res.mediaURL);
 
     const reviewDate = review.createdAt ? new Date(review.createdAt).toLocaleDateString() : '';
 

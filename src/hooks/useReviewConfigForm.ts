@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { IReviewConfiguration } from '../types/reviewConfigs.ts';
+import {IConfigField, IReviewConfiguration} from '../types/reviewConfigs.ts';
 import { useReviewConfigData } from './useReviewConfigData.ts';
 
 // Updated type definitions to match original API
@@ -20,7 +20,7 @@ interface UseReviewConfigFormReturn {
 
 export const useReviewConfigForm = (initialData: IReviewConfiguration): UseReviewConfigFormReturn => {
     // Form state - keep original structure for compatibility
-    const [reviewConfigs, setReviewConfigs] = useState<IReviewConfiguration | null>(null);
+    const [reviewConfigs, setReviewConfigs] = useState<any | null>(null);
 
     // UI state
     const [isSubmitting, setIsSubmitting] = useState<boolean | undefined>(undefined);
@@ -52,12 +52,12 @@ export const useReviewConfigForm = (initialData: IReviewConfiguration): UseRevie
     const handleFieldChange = useCallback(
         (key: string, value: string | number | boolean, propName: keyof Omit<IReviewConfiguration, 'merchantId'>) => {
             setIsEditing(true);
-            setReviewConfigs((prev) => {
+            setReviewConfigs((prev: any) => {
                 if (!prev || !prev[propName]) return prev;
 
                 return {
                     ...prev,
-                    [propName]: prev[propName].map((field) =>
+                    [propName]: prev[propName].map((field: IConfigField) =>
                         field.key === key
                             ? { ...field, value: String(value) } // Convert to string since your interface expects string
                             : field

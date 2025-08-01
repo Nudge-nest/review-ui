@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import defaultReview from '../defaultReview.json';
 import { IReview } from '../types/review.ts';
 
-const getDemoReview = (): IReview => defaultReview;
+const getDemoReview = (): IReview => defaultReview as IReview;
 
 export const useReviewData = (reviewId: string, pathname: string) => {
     const skipFetch = !reviewId || reviewId === 'demo';
