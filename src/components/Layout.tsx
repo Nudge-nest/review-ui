@@ -28,3 +28,14 @@ export const ConfigsLayout = () => {
         </ReviewConfigProvider>
     );
 };
+
+export const ReviewsListLayout = () => {
+    const { currentTheme } = useCurrentTheme();
+    return (
+        <div
+            className={`${currentTheme} w-full mx-auto h-[100vh] px-8 relative bg-[color:var(--color-lighter)] text-[color:var(--color-text)]`}
+        >
+            <Outlet />
+        </div>
+    );
+};
