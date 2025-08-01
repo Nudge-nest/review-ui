@@ -1,22 +1,24 @@
-import { createContext, FC, ReactNode, useContext } from 'react';
+import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 import ErrorComponent from '../components/ErrorComponent.tsx';
-import { IReview } from '../types/review.ts';
+import { IReview, IReviewItem } from '../types/review.ts';
 import { useReviewData } from '../hooks/useReviewData.ts';
 import { useSlider } from '../hooks/useSlider.ts';
 import { useReviewForm } from '../hooks/useReviewForm.ts';
+import { IConfigField, IReviewConfiguration } from '../types/reviewConfigs.ts';
 
 interface IReviewContext {
     // Data
     review: IReview | null;
+    shopReview: IReview | null;
+    merchantConfigs: IReviewConfiguration | null;
     isLoading: boolean;
+    isLoadingMerchantConfigs: boolean;
     isError: boolean;
     isFetching: boolean;
     reviewId: string;
     merchantId: string;
-    reviewResults: any[];
-    reviewProducts: any[];
-    reviewStatus: string;
+    reviewStatus: string | undefined;
     // Form state
     reviewFormHoook: any;
     // Form actions
@@ -30,16 +32,38 @@ const resolveReviewId = (reviewId: string, pathname: string) => {
     else return reviewId;
 };
 
+const getShopReview = (merchantConfigs: IReviewConfiguration[], merchantId: string): IReview | undefined => {
+    if (!merchantConfigs) return;
+    const { general } = merchantConfigs[0];
+    const shopQuestions = general.shopReviewQuestions as IConfigField[];
+    const shopReviewItems = shopQuestions.map((shopQuestion): IReviewItem => {
+        return { id: '14767045378186', name: shopQuestion.value };
+    });
+    return {
+        merchantId: merchantId,
+        items: shopReviewItems,
+        status: 'Pending',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    };
+};
+
 const ReviewContext = createContext<IReviewContext | null>(null);
 
 export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const { id } = useParams<{ id: string }>();
     const { pathname } = useLocation();
     const reviewId = resolveReviewId(id as string, pathname);
-    const { review, reviewResults, reviewProducts, reviewStatus, isError, isLoading, isFetching } =
-        useReviewData(reviewId);
+    const { review, reviewStatus, isError, isLoading, isFetching, merchantConfigs, merchantId, isLoadingMerchantConfigs } =
+        useReviewData(reviewId, pathname);
     const sliderHook = useSlider(3);
-    const formHook = useReviewForm(review);
+    const formHook = useReviewForm(review as IReview);
+    const [shopReview, setShopReview] = useState<IReview | null>(null);
+
+    useEffect(() => {
+        if (isLoading || isLoadingMerchantConfigs) return;
+        if (merchantConfigs && !shopReview) setShopReview(getShopReview(merchantConfigs, merchantId) as IReview);
+    }, [merchantConfigs, shopReview, merchantId]);
 
     // Error state
     if (isError) return <ErrorComponent message="Nothing to see here!" />;
@@ -54,10 +78,11 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 reviewId,
                 reviewFormHoook: formHook,
                 sliderHook,
-                merchantId: review?.merchantId,
-                reviewResults,
-                reviewProducts,
+                merchantId: merchantId,
                 reviewStatus,
+                merchantConfigs,
+                shopReview,
+                isLoadingMerchantConfigs,
             }}
         >
             {children}

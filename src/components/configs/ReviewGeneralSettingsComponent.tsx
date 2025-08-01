@@ -6,6 +6,7 @@ import ColumnHeaderComponent from './ColumnHeaderComponent.tsx';
 
 const ReviewGeneralSettingsComponent = () => {
     const { reviewConfigs, reviewConfigFormHoook } = useReviewConfig();
+    const shopReviewQuestions:any = reviewConfigs ? reviewConfigs?.general.shopReviewQuestions : [];
 
     return (
         <div>
@@ -15,7 +16,7 @@ const ReviewGeneralSettingsComponent = () => {
             {/* Configuration Rows */}
             <div className="space-y-3">
                 {reviewConfigs?.general ? (
-                    reviewConfigs.general.map((field) => {
+                    shopReviewQuestions.map((field) => {
                         return (
                             <ConfigRowComponent
                                 key={field.key}

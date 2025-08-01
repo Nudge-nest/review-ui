@@ -1,7 +1,7 @@
 // Type for individual configuration fields
 type FieldType = 'text' | 'number' | 'select' | 'url' | 'image' | 'boolean' | 'json';
 
-interface IConfigField {
+export interface IConfigField {
     key: string;
     value: string;
     description: string;
@@ -16,7 +16,7 @@ export interface IReviewConfiguration {
     remindersFrequency: IConfigField[];
     publish: IConfigField[];
     qrCode: IConfigField[];
-    general: IConfigField[];
+    general: IGeneralConfigs;
 }
 
 // Optional: More specific interfaces if you want stricter typing
@@ -46,6 +46,10 @@ interface IQrCodeField extends IConfigField {
     type: 'url' | 'image';
 }
 
+interface IGeneralConfigs {
+    shopReviewQuestions: IConfigField[];
+}
+
 // Stricter version of the main interface (optional)
 export interface IStrictReviewConfiguration {
     merchantId: string;
@@ -54,7 +58,7 @@ export interface IStrictReviewConfiguration {
     remindersFrequency: IRemindersFrequencyField[];
     publish: IPublishField[];
     qrCode: IQrCodeField[];
-    general: IConfigField[];
+    general: IGeneralConfigs;
 }
 
 // If you need specific enums

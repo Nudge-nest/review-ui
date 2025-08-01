@@ -1,29 +1,42 @@
-import { useGetReviewQuery, useUpdateReviewMutation } from '../redux/nudgenest.ts';
+import { useGetReviewQuery, useUpdateReviewMutation, useGetReviewConfigsQuery } from '../redux/nudgenest.ts';
 import { useMemo } from 'react';
 import defaultReview from '../defaultReview.json';
+import { IReview } from '../types/review.ts';
 
-const getDemoReview = () => defaultReview;
+const getDemoReview = (): IReview => defaultReview;
 
-export const useReviewData = (reviewId: string) => {
+export const useReviewData = (reviewId: string, pathname: string) => {
     const skipFetch = !reviewId || reviewId === 'demo';
+    const _storeReviewMerchantId = pathname.split('/')[3] as string;
     const { data, isError, isLoading, isFetching } = useGetReviewQuery(reviewId as string, { skip: skipFetch });
+    const {
+        data: merchantConf,
+        isError: isMerchantConfigError,
+        isLoading: isLoadingMerchantConfigs,
+    } = useGetReviewConfigsQuery(data ? data.merchantId : _storeReviewMerchantId);
     const [updateReview] = useUpdateReviewMutation();
+
     const review = useMemo(() => {
         if (reviewId === 'demo') return getDemoReview();
         return data || null;
     }, [data, reviewId]);
 
-    console.log('Review data', review);
+    const merchantConfigs = useMemo(()=>{
+        return merchantConf;
+    }, [merchantConf])
+
+    console.log('Review data', review, merchantConfigs, pathname.split('/')[3]);
 
     return {
         review,
         isLoading,
         isError,
         isFetching,
-        reviewProducts: review ? review.items : [],
-        reviewResults: review ? review.results : [],
-        reviewStatus: review ? review.status : null,
+        reviewStatus: review?.status,
         updateReview,
-        merchantId: review ? review.merchantId : null,
+        merchantId: review ? review.merchantId : _storeReviewMerchantId,
+        merchantConfigs,
+        isMerchantConfigError: isMerchantConfigError,
+        isLoadingMerchantConfigs,
     };
 };

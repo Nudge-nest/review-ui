@@ -8,8 +8,8 @@ interface UseReviewConfigFormReturn {
     reviewConfigs: IReviewConfiguration | null;
     isSubmitting: boolean | undefined;
     setIsSubmitting: (value: boolean | undefined | ((prev: boolean | undefined) => boolean | undefined)) => void;
-    isEditing: boolean ;
-    setIsEditing: (value: boolean | ((prev: boolean ) => boolean )) => void;
+    isEditing: boolean;
+    setIsEditing: (value: boolean | ((prev: boolean) => boolean)) => void;
 
     // Actions - ORIGINAL FUNCTION NAMES
     handleUpdateReviewConfig: () => Promise<void>; // ORIGINAL NAME
